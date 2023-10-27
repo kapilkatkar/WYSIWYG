@@ -28,8 +28,8 @@ const ButtonComponet = ({
 ButtonComponet.defaultProps = {
   color: "white",
   background: "black",
-  top: 12,
+  top: 10,
   left: 12,
-  label: "submit",
+  label: " ",
 };
 export default ButtonComponet;

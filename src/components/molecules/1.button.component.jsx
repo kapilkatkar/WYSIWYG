@@ -7,9 +7,11 @@ const ButtonComponet = ({
   label,
   mtop,
   mleft,
+  onClickFun,
 }) => {
   return (
     <button
+      onClick={onClickFun}
       style={{
         color: `${color}`,
         background: `${background}`,

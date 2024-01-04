@@ -7,6 +7,9 @@ const ButtonComponet = ({
   label,
   mtop,
   mleft,
+  fontWeight,
+  italic,
+  underline,
   onClickFun,
 }) => {
   return (
@@ -18,6 +21,9 @@ const ButtonComponet = ({
         cursor: "pointer",
         padding: `${top}px ${left}px`,
         margin: `${mtop}px ${mleft}px`,
+        fontWeight: fontWeight ? "bold" : "normal",
+        fontStyle: italic ? "italic" : "normal",
+        textDecoration: underline ? "underline" : "none",
       }}
     >
       {label}
@@ -31,5 +37,8 @@ ButtonComponet.defaultProps = {
   top: 10,
   left: 12,
   label: " ",
+  fontWeight: false,
+  italic: false,
+  textDecoration: false,
 };
 export default ButtonComponet;

@@ -43,6 +43,7 @@ const EditOptionBarComponent = () => {
         mleft={4}
         onClickFun={onUnderlineClick}
       ></ButtonComponet>
+      <input type="color" name="" id="" />
       <div
         style={{
           width: 400,

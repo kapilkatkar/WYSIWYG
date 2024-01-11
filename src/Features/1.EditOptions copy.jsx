@@ -13,6 +13,7 @@ const EditOptionBarComponent = () => {
   const [isBoldClicked, setIsBoldClicked] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderlined, setIsUnderlined] = useState(false);
+  const [openDilog, setOpenDilog] = useState(false);
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
@@ -73,21 +74,32 @@ const EditOptionBarComponent = () => {
     applyFormatting("formatBlock", value);
   };
 
-  const onTextSizeChange = (e) => {
-    const updatedSize = parseInt(e.target.value);
-    setTextSize(updatedSize);
-    applyFormatting("fontSize", updatedSize);
-  };
   const onIncreament = () => {
-    setTextSize((prev) => prev + 1);
-    applyFormatting("fontSize", `${textSize}`);
-  };
-  const onDecreament = () => {
-    if (textSize > 1) {
-      setTextSize((prev) => prev - 1);
-      applyFormatting("fontSize", `${textSize}`);
+    const selectedText = window.getSelection();
+    if (selectedText.toString() !== "") {
+      const currentFontSize = document.queryCommandValue("fontSize");
+      const newFontSize = currentFontSize
+        ? parseInt(currentFontSize) + 1
+        : textSize + 1;
+      applyFormatting("fontSize", newFontSize);
+      setTextSize(newFontSize);
     }
   };
+
+  const onDecreament = () => {
+    if (textSize > 1) {
+      const selectedText = window.getSelection();
+      if (selectedText.toString() !== "") {
+        const currentFontSize = document.queryCommandValue("fontSize");
+        const newFontSize = currentFontSize
+          ? parseInt(currentFontSize) - 1
+          : textSize - 1;
+        applyFormatting("fontSize", newFontSize);
+        setTextSize(newFontSize);
+      }
+    }
+  };
+
   return (
     <div>
       <div id="WYSIWYG">
@@ -171,13 +183,6 @@ const EditOptionBarComponent = () => {
           </span>
           <div>
             <button onClick={onDecreament}>-</button>
-            <input
-              type="number"
-              name="textSize"
-              id=""
-              value={textSize}
-              onChange={onTextSizeChange}
-            />
             <button onClick={onIncreament}>+</button>
           </div>
         </div>
@@ -188,6 +193,7 @@ const EditOptionBarComponent = () => {
               height: "350px",
               border: "1px solid black",
               minHeight: 150,
+              fontSize: 24,
             }}
             contentEditable={true}
           ></div>

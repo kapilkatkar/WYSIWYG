@@ -13,7 +13,7 @@ const EditOptionBarComponent = () => {
   const [isBoldClicked, setIsBoldClicked] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderlined, setIsUnderlined] = useState(false);
-  const [openDilog, setOpenDilog] = useState(false);
+  const [urlData, setUrlData] = useState("");
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
@@ -26,22 +26,25 @@ const EditOptionBarComponent = () => {
     setOpen(false);
   };
 
-  const handleSaveUrlData = (input) => {
-    console.log(input);
-    const { url, textToDisplay, title } = input;
-    const anchorUrl = `<a href="${url}" title="${title}">${textToDisplay}</a>`;
-    console.log({ anchorUrl });
+  const handleSaveUrlData = (data) => {
+    console.log("urlData", data);
+    setUrlData(data);
+    const url = `<a href="${data.url}" target="_blank" title="${data.title}"> ${
+      data.textToDisplay || data.url
+    }  <a>`;
+    document.getElementById("editor-box-content").innerHTML += url;
   };
 
-  useEffect(() => {
-    if (isBoldClicked) {
-      console.log("isBoldClicked", isBoldClicked);
-      applyFormatting("bold", null);
-    }
-  }, [isBoldClicked]);
+  // useEffect(() => {
+  //   if (isBoldClicked) {
+  //     console.log("isBoldClicked", isBoldClicked);
+  //     applyFormatting("bold", null);
+  //   }
+  // }, [isBoldClicked]);
+
   const onBoldClick = () => {
     //applyFormatting("bold", null);
-
+    applyFormatting("bold", null);
     setIsBoldClicked((prev) => !prev);
   };
 
@@ -188,6 +191,7 @@ const EditOptionBarComponent = () => {
         </div>
         <div id="editor-box">
           <div
+            id="editor-box-content"
             style={{
               width: "100%",
               height: "350px",

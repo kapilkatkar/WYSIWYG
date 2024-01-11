@@ -4,14 +4,21 @@ import "./style.css";
 import { useState } from "react";
 
 export function UrlDialog({ open, handleClose, handleSave }) {
-  const [url, setUrl] = useState("");
-  const [textToDisplay, setTextToDisplay] = useState("");
-  const [title, setTitle] = useState("");
+  const [dialogdata, setDialogdata] = useState({
+    url: "",
+    textToDisplay: "",
+    title: "",
+  });
 
-  const handleSaveInput = () => {
-    const data = { url, textToDisplay, title };
-    handleClose();
-    handleSave(data);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setDialogdata((prev) => ({ ...prev, [name]: value }));
+    console.log(dialogdata);
+  };
+
+  const handleSaveData = () => {
+    handleSave(dialogdata);
+    handleClose(true);
   };
   return (
     <Dialog
@@ -24,9 +31,10 @@ export function UrlDialog({ open, handleClose, handleSave }) {
         <label htmlFor="url">URL</label>
         <input
           type="text"
+          name="url"
           id="url"
           className="UrlDialogInput"
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
         />
 
         <label htmlFor="textToDisplay">Text to Display</label>
@@ -35,7 +43,7 @@ export function UrlDialog({ open, handleClose, handleSave }) {
           name="textToDisplay"
           id="textToDisplay"
           className="UrlDialogInput"
-          onChange={(e) => setTextToDisplay(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
         />
 
         <label htmlFor="title">Title</label>
@@ -44,11 +52,11 @@ export function UrlDialog({ open, handleClose, handleSave }) {
           name="title"
           id="title"
           className="UrlDialogInput"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
         />
 
         <div className="UrlDialogButtons">
-          <button className="UrlDialogButton" onClick={handleSaveInput}>
+          <button className="UrlDialogButton" onClick={handleSaveData}>
             Save
           </button>
           <button className="UrlDialogButton" onClick={handleClose}>

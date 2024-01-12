@@ -31,6 +31,7 @@ const EditOptionBarComponent = () => {
 
   const onEmojiSelected = (e) => {
     setSelectedEmoji(e);
+    document.getElementById("editor-box-content").innerHTML += e;
   };
 
   const openUrlDilog = () => {

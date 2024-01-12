@@ -3,6 +3,7 @@ import ButtonComponent from "../Components/molecules/1.button.component";
 import { FaLink } from "react-icons/fa";
 import { UrlDialog } from "./2.urlDialog";
 import "./style.css";
+import { EmojiComponent } from "./emoji";
 
 const EditOptionBarComponent = () => {
   const [selectedColor, setSelectedColor] = useState("black");
@@ -14,10 +15,24 @@ const EditOptionBarComponent = () => {
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderlined, setIsUnderlined] = useState(false);
   const [urlData, setUrlData] = useState("");
+  const [isEmojiDiaOpen, setIsEmojiDiaOpen] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
   };
+
+  const openEmojiDialog = () => {
+    setIsEmojiDiaOpen(true);
+  };
+  const closeEmojiDialog = () => {
+    setIsEmojiDiaOpen(false);
+  };
+
+  const onEmojiSelected = (e) => {
+    setSelectedEmoji(e);
+  };
+
   const openUrlDilog = () => {
     setOpen(true);
   };
@@ -34,13 +49,6 @@ const EditOptionBarComponent = () => {
     }  <a>`;
     document.getElementById("editor-box-content").innerHTML += url;
   };
-
-  // useEffect(() => {
-  //   if (isBoldClicked) {
-  //     console.log("isBoldClicked", isBoldClicked);
-  //     applyFormatting("bold", null);
-  //   }
-  // }, [isBoldClicked]);
 
   const onBoldClick = () => {
     //applyFormatting("bold", null);
@@ -116,7 +124,7 @@ const EditOptionBarComponent = () => {
             mtop={4}
             mleft={4}
             fontWeight={true}
-            background={!isBoldClicked ? "white" : "blue"}
+            background={"white"}
             onClickFun={onBoldClick}
           ></ButtonComponent>
           <ButtonComponent
@@ -188,7 +196,18 @@ const EditOptionBarComponent = () => {
             <button onClick={onDecreament}>-</button>
             <button onClick={onIncreament}>+</button>
           </div>
+          <div>
+            <div>
+              <div onClick={openEmojiDialog}>Emoji</div>
+              <EmojiComponent
+                isOpen={isEmojiDiaOpen}
+                isClosed={closeEmojiDialog}
+                handleEmojiSelect={onEmojiSelected}
+              />
+            </div>
+          </div>
         </div>
+
         <div id="editor-box">
           <div
             id="editor-box-content"
@@ -197,7 +216,7 @@ const EditOptionBarComponent = () => {
               height: "350px",
               border: "1px solid black",
               minHeight: 150,
-              fontSize: 24,
+              fontSize: 16,
             }}
             contentEditable={true}
           ></div>

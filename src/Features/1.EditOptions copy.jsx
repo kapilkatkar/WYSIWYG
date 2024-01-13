@@ -84,9 +84,9 @@ const EditOptionBarComponent = () => {
 
   const onColorPick = (e) => {
     const selectedColor = tinycolor(e.target.value).toHexString();
-    applyFormatting("forecolor", e.target.value);
+    applyFormatting("forecolor", selectedColor);
     document.execCommand("styleWithCSS", false, true);
-    setSelectedColor(e.target.value);
+    setSelectedColor(selectedColor);
   };
 
   const onBackgroundColor = (e) => {

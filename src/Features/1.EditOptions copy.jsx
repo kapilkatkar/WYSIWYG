@@ -4,11 +4,12 @@ import { FaLink } from "react-icons/fa";
 import { UrlDialog } from "./2.urlDialog";
 import "./style.css";
 import { EmojiComponent } from "./emoji";
+import tinycolor from "tinycolor2";
 
 const EditOptionBarComponent = () => {
-  const [selectedColor, setSelectedColor] = useState("black");
+  const [selectedColor, setSelectedColor] = useState("#00000");
   const [selectedBackgroundColor, setSelectedBackgroundColor] =
-    useState("white");
+    useState("#fffff");
   const [open, setOpen] = useState(false);
   const [textSize, setTextSize] = useState(16);
   const [isBoldClicked, setIsBoldClicked] = useState(false);
@@ -21,6 +22,16 @@ const EditOptionBarComponent = () => {
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
   };
+
+  // const handleImageSelect = (e) => {
+  //   const img = e.target.files[0];
+  //   // document.getElementById("editor-box-content").innerHTML +=
+  //   //   e.target.files[0];
+  //   if (img) {
+  //     console.log("img", img);
+  //     document.getElementById("editor-box-content").innerHTML += img;
+  //   }
+  // };
 
   const openEmojiDialog = () => {
     setIsEmojiDiaOpen(true);
@@ -72,13 +83,16 @@ const EditOptionBarComponent = () => {
   };
 
   const onColorPick = (e) => {
+    const selectedColor = tinycolor(e.target.value).toHexString();
     applyFormatting("forecolor", e.target.value);
+    document.execCommand("styleWithCSS", false, true);
     setSelectedColor(e.target.value);
   };
 
   const onBackgroundColor = (e) => {
-    const selectedColor = e.target.value;
+    const selectedColor = tinycolor(e.target.value).toHexString();
     applyFormatting("backColor", selectedColor);
+    document.execCommand("styleWithCSS", false, true);
     setSelectedBackgroundColor(selectedColor);
   };
 
@@ -199,7 +213,9 @@ const EditOptionBarComponent = () => {
           </div>
           <div>
             <div>
-              <div onClick={openEmojiDialog}>Emoji</div>
+              <div onClick={openEmojiDialog}>
+                <img src="/Assets/smile.png" alt="emoji" />
+              </div>
               <EmojiComponent
                 isOpen={isEmojiDiaOpen}
                 isClosed={closeEmojiDialog}
@@ -207,6 +223,16 @@ const EditOptionBarComponent = () => {
               />
             </div>
           </div>
+          {/* <div>
+            <label htmlFor="image">Select Image</label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              style={{ display: "none" }}
+              onChange={handleImageSelect}
+            />
+          </div> */}
         </div>
 
         <div id="editor-box">

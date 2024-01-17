@@ -7,9 +7,9 @@ import { EmojiComponent } from "./emoji";
 import tinycolor from "tinycolor2";
 
 const EditOptionBarComponent = () => {
-  const [selectedColor, setSelectedColor] = useState("#00000");
+  const [selectedColor, setSelectedColor] = useState("#000000");
   const [selectedBackgroundColor, setSelectedBackgroundColor] =
-    useState("#fffff");
+    useState("#ffffff");
   const [open, setOpen] = useState(false);
   const [textSize, setTextSize] = useState(16);
   const [isBoldClicked, setIsBoldClicked] = useState(false);
@@ -86,14 +86,16 @@ const EditOptionBarComponent = () => {
     const selectedColor = tinycolor(e.target.value).toHexString();
     applyFormatting("forecolor", selectedColor);
     document.execCommand("styleWithCSS", false, true);
-    setSelectedColor(selectedColor);
+    setSelectedColor((prev) => {
+      !prev;
+    });
   };
 
   const onBackgroundColor = (e) => {
     const selectedColor = tinycolor(e.target.value).toHexString();
     applyFormatting("backColor", selectedColor);
     document.execCommand("styleWithCSS", false, true);
-    setSelectedBackgroundColor(selectedColor);
+    setSelectedBackgroundColor((prev) => !prev);
   };
 
   const onHeading = (value) => {

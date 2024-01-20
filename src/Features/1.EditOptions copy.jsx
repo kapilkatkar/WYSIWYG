@@ -5,6 +5,7 @@ import { UrlDialog } from "./2.urlDialog";
 import "./style.css";
 import { EmojiComponent } from "./emoji";
 import tinycolor from "tinycolor2";
+import { io } from "socket.io-client";
 
 const EditOptionBarComponent = () => {
   const [selectedColor, setSelectedColor] = useState("#000000");
@@ -18,9 +19,15 @@ const EditOptionBarComponent = () => {
   const [urlData, setUrlData] = useState("");
   const [isEmojiDiaOpen, setIsEmojiDiaOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
+  const [socket, setSocket] = useState("");
+  const [editorContent, setEditorContent] = useState("");
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
+
+    // Emit the updated content to the server
+    const content = document.getElementById("editor-box-content").innerHTML;
+    socket.emit("updateEditorContent", content);
   };
 
   // const handleImageSelect = (e) => {
@@ -32,6 +39,24 @@ const EditOptionBarComponent = () => {
   //     document.getElementById("editor-box-content").innerHTML += img;
   //   }
   // };
+
+  useEffect(() => {
+    const s = io("http://localhost:3001");
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      // Listen for changes from the server and update the editor content
+      socket.on("editorContent", (content) => {
+        setEditorContent(content);
+      });
+    }
+  }, [socket]);
 
   const openEmojiDialog = () => {
     setIsEmojiDiaOpen(true);
@@ -248,6 +273,12 @@ const EditOptionBarComponent = () => {
               fontSize: 16,
             }}
             contentEditable={true}
+            dangerouslySetInnerHTML={{ __html: editorContent }}
+            onBlur={() => {
+              const content =
+                document.getElementById("editor-box-content").innerHTML;
+              socket.emit("updateEditorContent", content);
+            }}
           ></div>
         </div>
       </div>

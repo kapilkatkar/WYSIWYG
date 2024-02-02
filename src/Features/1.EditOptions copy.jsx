@@ -267,8 +267,7 @@ const EditOptionBarComponent = () => {
             id="editor-box-content"
             style={{
               width: "100%",
-              height: "350px",
-              border: "1px solid black",
+              height: "1350px",
               minHeight: 150,
               fontSize: 16,
             }}

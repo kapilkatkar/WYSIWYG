@@ -163,8 +163,6 @@ const EditOptionBarComponent = () => {
           <ButtonComponent
             label={"B"}
             color={"black"}
-            mtop={4}
-            mleft={4}
             fontWeight={true}
             background={"white"}
             onClickFun={onBoldClick}
@@ -174,8 +172,6 @@ const EditOptionBarComponent = () => {
             color={"black"}
             italic={true}
             background={"white"}
-            mtop={4}
-            mleft={4}
             onClickFun={onItalicClick}
           ></ButtonComponent>
           <ButtonComponent
@@ -183,8 +179,6 @@ const EditOptionBarComponent = () => {
             label={"U"}
             color={"black"}
             background={"white"}
-            mtop={4}
-            mleft={4}
             onClickFun={onUnderlineClick}
           ></ButtonComponent>
           <input
@@ -241,7 +235,7 @@ const EditOptionBarComponent = () => {
           <div>
             <div>
               <div onClick={openEmojiDialog}>
-                <img src="/Assets/smile.png" alt="emoji" />
+                <img src="../Assets/smile.png" alt="emoji" />
               </div>
               <EmojiComponent
                 isOpen={isEmojiDiaOpen}
@@ -267,7 +261,7 @@ const EditOptionBarComponent = () => {
             id="editor-box-content"
             style={{
               width: "100%",
-              height: "1350px",
+              height: "350px",
               minHeight: 150,
               fontSize: 16,
             }}

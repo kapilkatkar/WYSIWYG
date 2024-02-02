@@ -24,6 +24,7 @@ const ButtonComponet = ({
         fontWeight: fontWeight ? "bold" : "normal",
         fontStyle: italic ? "italic" : "normal",
         textDecoration: underline ? "underline" : "none",
+        border: "none",
       }}
     >
       {label}

@@ -51,7 +51,6 @@ const EditOptionBarComponent = () => {
 
   useEffect(() => {
     if (socket) {
-      // Listen for changes from the server and update the editor content
       socket.on("editorContent", (content) => {
         setEditorContent(content);
       });

@@ -90,3 +90,23 @@ body {
   height: auto;
   overflow-y: auto;
 }
+@media only screen and (max-width: 768px) {
+  #button-conatiner {
+    margin: 10px 10px 0px 10px;
+    width: 90% !important;
+  }
+
+  #editor-box {
+    margin: 90px 10px 10px 10px;
+    width: 90% !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #button-conatiner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    width: 90% !important;
+  }
+}

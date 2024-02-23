@@ -9,17 +9,18 @@ const ESignatureDialog = ({ open, handleClose, handleSave }) => {
 
   const clearSignature = () => {
     signatureRef.current.clear();
+    handleClose(true);
   };
 
   const saveSignature = () => {
-    const imageData = signatureRef.current.toDataURL();
-    setSignatureData(imageData);
-    handleSave(imageData);
+    const Esignature = signatureRef.current.toDataURL();
+    setSignatureData(Esignature);
+    handleSave(Esignature);
     handleClose(true);
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} BackdropClick={false}>
       <div>
         <SignatureCanvas
           ref={signatureRef}

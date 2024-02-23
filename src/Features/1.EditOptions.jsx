@@ -23,6 +23,7 @@ const EditOptionBarComponent = () => {
   const [socket, setSocket] = useState("");
   const [editorContent, setEditorContent] = useState("");
   const [openSignatureDialog, setOpenSignatureDialog] = useState(false);
+  const [signReceived, setSignReceived] = useState("");
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
@@ -167,6 +168,14 @@ const EditOptionBarComponent = () => {
 
   const handleSaveSignatureData = (data) => {
     console.log("Signature data:", data);
+    var base64Image = data.split(";base64,").pop();
+    var img = new Image();
+    img.src = "data:image/png;base64," + base64Image;
+    img.style.height = "20px";
+    img.style.width = "80px";
+    img.style.filter = "brightness(20%)";
+
+    document.getElementById("editor-box-content").appendChild(img);
   };
 
   return (

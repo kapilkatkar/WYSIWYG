@@ -110,3 +110,11 @@ body {
     width: 90% !important;
   }
 }
+.btn {
+  height: 30px;
+  width: 70px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  color: white;
+  background-color: black;
+}

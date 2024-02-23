@@ -1,63 +1,317 @@
-import { useState } from "react";
-import ButtonComponet from "../Components/molecules/1.button.component";
+import { useEffect, useState } from "react";
+import ButtonComponent from "../Components/molecules/1.button.component";
+import { FaLink } from "react-icons/fa";
+import { UrlDialog } from "./2.urlDialog";
+import "./style.css";
+import { EmojiComponent } from "./emoji";
+import tinycolor from "tinycolor2";
+import { io } from "socket.io-client";
+import ESignatureDialog from "./3.ESignature";
 
 const EditOptionBarComponent = () => {
-  const [isBold, setIsBold] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("#000000");
+  const [selectedBackgroundColor, setSelectedBackgroundColor] =
+    useState("#ffffff");
+  const [open, setOpen] = useState(false);
+  const [textSize, setTextSize] = useState(16);
+  const [isBoldClicked, setIsBoldClicked] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
-  const [isUnderline, setIsUnderline] = useState(false);
+  const [isUnderlined, setIsUnderlined] = useState(false);
+  const [urlData, setUrlData] = useState("");
+  const [isEmojiDiaOpen, setIsEmojiDiaOpen] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
+  const [socket, setSocket] = useState("");
+  const [editorContent, setEditorContent] = useState("");
+  const [openSignatureDialog, setOpenSignatureDialog] = useState(false);
+
+  const applyFormatting = (command, value) => {
+    document.execCommand(command, false, value);
+
+    // Emit the updated content to the server
+    const content = document.getElementById("editor-box-content").innerHTML;
+    socket.emit("updateEditorContent", content);
+  };
+
+  // const handleImageSelect = (e) => {
+  //   const img = e.target.files[0];
+  //   // document.getElementById("editor-box-content").innerHTML +=
+  //   //   e.target.files[0];
+  //   if (img) {
+  //     console.log("img", img);
+  //     document.getElementById("editor-box-content").innerHTML += img;
+  //   }
+  // };
+
+  useEffect(() => {
+    const s = io("http://localhost:3001");
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("editorContent", (content) => {
+        setEditorContent(content);
+      });
+    }
+  }, [socket]);
+
+  const openEmojiDialog = () => {
+    setIsEmojiDiaOpen(true);
+  };
+  const closeEmojiDialog = () => {
+    setIsEmojiDiaOpen(false);
+  };
+
+  const onEmojiSelected = (e) => {
+    setSelectedEmoji(e);
+    document.getElementById("editor-box-content").innerHTML += e;
+  };
+
+  const openUrlDilog = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSaveUrlData = (data) => {
+    console.log("urlData", data);
+    setUrlData(data);
+    const url = `<a href="${data.url}" target="_blank" title="${data.title}"> ${
+      data.textToDisplay || data.url
+    }  <a>`;
+    document.getElementById("editor-box-content").innerHTML += url;
+  };
 
   const onBoldClick = () => {
-    setIsBold(!isBold);
+    //applyFormatting("bold", null);
+    applyFormatting("bold", null);
+    setIsBoldClicked((prev) => !prev);
   };
+
   const onItalicClick = () => {
-    setIsItalic(!isItalic);
+    applyFormatting("italic", null);
+    setIsItalic((prev) => {
+      !prev;
+    });
   };
+
   const onUnderlineClick = () => {
-    setIsUnderline(!isUnderline);
+    applyFormatting("underline", null);
+    setIsUnderlined((prev) => {
+      !prev;
+    });
+  };
+
+  const onColorPick = (e) => {
+    const selectedColor = tinycolor(e.target.value).toHexString();
+    applyFormatting("forecolor", selectedColor);
+    document.execCommand("styleWithCSS", false, true);
+    setSelectedColor((prev) => {
+      !prev;
+    });
+  };
+
+  const onBackgroundColor = (e) => {
+    const selectedColor = tinycolor(e.target.value).toHexString();
+    applyFormatting("backColor", selectedColor);
+    document.execCommand("styleWithCSS", false, true);
+    setSelectedBackgroundColor((prev) => !prev);
+  };
+
+  const onHeading = (value) => {
+    applyFormatting("formatBlock", value);
+  };
+
+  const onIncreament = () => {
+    const selectedText = window.getSelection();
+    if (selectedText.toString() !== "") {
+      const currentFontSize = document.queryCommandValue("fontSize");
+      const newFontSize = currentFontSize
+        ? parseInt(currentFontSize) + 1
+        : textSize + 1;
+      applyFormatting("fontSize", newFontSize);
+      setTextSize(newFontSize);
+    }
+  };
+
+  const onDecreament = () => {
+    if (textSize > 1) {
+      const selectedText = window.getSelection();
+      if (selectedText.toString() !== "") {
+        const currentFontSize = document.queryCommandValue("fontSize");
+        const newFontSize = currentFontSize
+          ? parseInt(currentFontSize) - 1
+          : textSize - 1;
+        applyFormatting("fontSize", newFontSize);
+        setTextSize(newFontSize);
+      }
+    }
+  };
+
+  const openSignatureDialogHandler = () => {
+    console.log("setOpenSignatureDialog 1", openSignatureDialog);
+    setOpenSignatureDialog((prevState) => {
+      console.log("setOpenSignatureDialog 1", prevState);
+      return true;
+    });
+  };
+  const closeSignatureDialogHandler = () => {
+    setOpenSignatureDialog(false);
+  };
+
+  const handleSaveSignatureData = (data) => {
+    console.log("Signature data:", data);
   };
 
   return (
     <div>
-      <h1>WYSIWYG</h1>
-      <ButtonComponet
-        label={"B"}
-        color={"black"}
-        background={"white"}
-        mtop={4}
-        mleft={4}
-        onClickFun={onBoldClick}
-      ></ButtonComponet>
-      <ButtonComponet
-        label={"I"}
-        color={"black"}
-        background={"white"}
-        mtop={4}
-        mleft={4}
-        onClickFun={onItalicClick}
-      ></ButtonComponet>
-      <ButtonComponet
-        label={"U"}
-        color={"black"}
-        background={"white"}
-        mtop={4}
-        mleft={4}
-        onClickFun={onUnderlineClick}
-      ></ButtonComponet>
-      <input type="color" name="" id="" />
-      <div
-        style={{
-          width: 400,
-          border: "1px solid black",
-          padding: 12,
-          marginTop: 12,
-          minHeight: 150,
-          fontWeight: isBold ? "bold" : "normal",
-          fontStyle: isItalic ? "italic" : "inherit",
-          textDecoration: isUnderline ? "underline" : "none",
-        }}
-        contentEditable={true}
-      ></div>
+      <div id="WYSIWYG">
+        <div>WYSIWYG</div>
+      </div>
+      <div className="button-editor-conatiner">
+        <div id="button-conatiner">
+          <ButtonComponent
+            label={"B"}
+            color={"black"}
+            fontWeight={true}
+            background={"white"}
+            onClickFun={onBoldClick}
+          ></ButtonComponent>
+          <ButtonComponent
+            label={"I"}
+            color={"black"}
+            italic={true}
+            background={"white"}
+            onClickFun={onItalicClick}
+          ></ButtonComponent>
+          <ButtonComponent
+            underline={true}
+            label={"U"}
+            color={"black"}
+            background={"white"}
+            onClickFun={onUnderlineClick}
+          ></ButtonComponent>
+          <input
+            type="color"
+            name="color"
+            id="color"
+            onChange={onColorPick}
+            value={selectedColor}
+          />
+          <input
+            type="color"
+            name="Backgroundcolor"
+            id="Backgroundcolor"
+            onChange={onBackgroundColor}
+            value={selectedBackgroundColor}
+          />
+          <select
+            name="header"
+            id="header"
+            onChange={(e) => onHeading(e.target.value)}
+          >
+            <option value="p">header</option>
+            <option value="h1" style={{ fontSize: "34px" }}>
+              header 1
+            </option>
+            <option value="h2" style={{ fontSize: "30px" }}>
+              header 2
+            </option>
+            <option value="h3" style={{ fontSize: "24px" }}>
+              header 3
+            </option>
+            <option value="h4" style={{ fontSize: "20px" }}>
+              header 4
+            </option>
+            <option value="h5" style={{ fontSize: "18px" }}>
+              header 5
+            </option>
+            <option value="h6" style={{ fontSize: "16px" }}>
+              header 6
+            </option>
+          </select>
+          <span>
+            <FaLink onClick={openUrlDilog} />
+            <UrlDialog
+              open={open}
+              handleClose={handleClose}
+              handleSave={handleSaveUrlData}
+            />
+          </span>
+          <div>
+            <button onClick={onDecreament}>-</button>
+            <button onClick={onIncreament}>+</button>
+          </div>
+          <div>
+            <div>
+              <div onClick={openEmojiDialog}>
+                <img src="../Assets/smile.png" alt="emoji" />
+              </div>
+              <EmojiComponent
+                isOpen={isEmojiDiaOpen}
+                isClosed={closeEmojiDialog}
+                handleEmojiSelect={onEmojiSelected}
+              />
+            </div>
+          </div>{" "}
+          <div>
+            <button
+              onClick={openSignatureDialogHandler}
+              style={{
+                height: "40px",
+                width: "70px",
+                backgroundColor: "black",
+                color: "white",
+              }}
+            >
+              E-Sign
+            </button>
+
+            <ESignatureDialog
+              open={openSignatureDialog}
+              handleClose={closeSignatureDialogHandler}
+              handleSave={handleSaveSignatureData}
+            />
+          </div>
+          {/* <div>
+            <label htmlFor="image">Select Image</label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              style={{ display: "none" }}
+              onChange={handleImageSelect}
+            />
+          </div> */}
+        </div>
+
+        <div id="editor-box">
+          <div
+            id="editor-box-content"
+            style={{
+              width: "100%",
+              height: "350px",
+              minHeight: 150,
+              fontSize: 16,
+            }}
+            contentEditable={true}
+            dangerouslySetInnerHTML={{ __html: editorContent }}
+            onBlur={() => {
+              const content =
+                document.getElementById("editor-box-content").innerHTML;
+              socket.emit("updateEditorContent", content);
+            }}
+          ></div>
+        </div>
+      </div>
     </div>
   );
 };
+
 export default EditOptionBarComponent;

@@ -27,13 +27,16 @@ const EditOptionBarComponent = () => {
   const [openSignatureDialog, setOpenSignatureDialog] = useState(false);
   const [signReceived, setSignReceived] = useState("");
   const uuid = uuidv4();
+  const [isCollaborative, setIsCollaborative] = useState(false);
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
 
     // Emit the updated content to the server
-    const content = document.getElementById("editor-box-content").innerHTML;
-    socket.emit("updateEditorContent", content);
+    if (isCollaborative) {
+      const content = document.getElementById("editor-box-content").innerHTML;
+      socket.emit("updateEditorContent", content);
+    }
   };
   console.log(uuid);
   // const handleImageSelect = (e) => {
@@ -56,12 +59,12 @@ const EditOptionBarComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && isCollaborative) {
       socket.on("editorContent", (content) => {
         setEditorContent(content);
       });
     }
-  }, [socket]);
+  }, [socket, isCollaborative]);
 
   const openEmojiDialog = () => {
     setIsEmojiDiaOpen(true);
@@ -181,6 +184,10 @@ const EditOptionBarComponent = () => {
     document.getElementById("editor-box-content").appendChild(img);
   };
 
+  const handleCreateRoom = () => {
+    setIsCollaborative(true);
+  };
+
   return (
     <div>
       <div id="WYSIWYG">
@@ -292,7 +299,9 @@ const EditOptionBarComponent = () => {
             />
           </div>
           <div>
-            <Link to={`/collabrative/${uuid}`}>Create room</Link>
+            <Link to={`/collabrative/${uuid}`} onClick={handleCreateRoom}>
+              Create room
+            </Link>
           </div>
           {/* <div>
             <label htmlFor="image">Select Image</label>

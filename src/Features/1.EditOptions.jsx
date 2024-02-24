@@ -76,8 +76,11 @@ const EditOptionBarComponent = () => {
   const onEmojiSelected = (e) => {
     setSelectedEmoji(e);
     document.getElementById("editor-box-content").innerHTML += e;
+    if (isCollaborative) {
+      const content = document.getElementById("editor-box-content").innerHTML;
+      socket.emit("updateEditorContent", content);
+    }
   };
-
   const openUrlDilog = () => {
     setOpen(true);
   };
@@ -87,12 +90,15 @@ const EditOptionBarComponent = () => {
   };
 
   const handleSaveUrlData = (data) => {
-    console.log("urlData", data);
     setUrlData(data);
-    const url = `<a href="${data.url}" target="_blank" title="${data.title}"> ${
+    const url = `<a href="${data.url}" target="_blank" title="${data.title}">${
       data.textToDisplay || data.url
-    }  <a>`;
+    }</a>`;
     document.getElementById("editor-box-content").innerHTML += url;
+    if (isCollaborative) {
+      const content = document.getElementById("editor-box-content").innerHTML;
+      socket.emit("updateEditorContent", content);
+    }
   };
 
   const onBoldClick = () => {
@@ -186,6 +192,8 @@ const EditOptionBarComponent = () => {
 
   const handleCreateRoom = () => {
     setIsCollaborative(true);
+    const content = document.getElementById("editor-box-content").innerHTML;
+    socket.emit("updateEditorContent", content);
   };
 
   return (

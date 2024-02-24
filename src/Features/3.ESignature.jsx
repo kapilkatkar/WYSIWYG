@@ -20,7 +20,7 @@ const ESignatureDialog = ({ open, handleClose, handleSave }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} BackdropClick={false}>
+    <Dialog open={open} onClose={handleClose}>
       <div>
         <SignatureCanvas
           ref={signatureRef}

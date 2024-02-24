@@ -7,6 +7,8 @@ import { EmojiComponent } from "./emoji";
 import tinycolor from "tinycolor2";
 import { io } from "socket.io-client";
 import ESignatureDialog from "./3.ESignature";
+import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const EditOptionBarComponent = () => {
   const [selectedColor, setSelectedColor] = useState("#000000");
@@ -24,6 +26,7 @@ const EditOptionBarComponent = () => {
   const [editorContent, setEditorContent] = useState("");
   const [openSignatureDialog, setOpenSignatureDialog] = useState(false);
   const [signReceived, setSignReceived] = useState("");
+  const uuid = uuidv4();
 
   const applyFormatting = (command, value) => {
     document.execCommand(command, false, value);
@@ -32,7 +35,7 @@ const EditOptionBarComponent = () => {
     const content = document.getElementById("editor-box-content").innerHTML;
     socket.emit("updateEditorContent", content);
   };
-
+  console.log(uuid);
   // const handleImageSelect = (e) => {
   //   const img = e.target.files[0];
   //   // document.getElementById("editor-box-content").innerHTML +=
@@ -268,7 +271,7 @@ const EditOptionBarComponent = () => {
                 handleEmojiSelect={onEmojiSelected}
               />
             </div>
-          </div>{" "}
+          </div>
           <div>
             <button
               onClick={openSignatureDialogHandler}
@@ -287,6 +290,9 @@ const EditOptionBarComponent = () => {
               handleClose={closeSignatureDialogHandler}
               handleSave={handleSaveSignatureData}
             />
+          </div>
+          <div>
+            <Link to={`/collabrative/${uuid}`}>Create room</Link>
           </div>
           {/* <div>
             <label htmlFor="image">Select Image</label>

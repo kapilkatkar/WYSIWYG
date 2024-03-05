@@ -59,12 +59,12 @@ const EditOptionBarComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (socket && isCollaborative) {
+    if (socket) {
       socket.on("editorContent", (content) => {
         setEditorContent(content);
       });
     }
-  }, [socket, isCollaborative]);
+  }, [socket]);
 
   const openEmojiDialog = () => {
     setIsEmojiDiaOpen(true);

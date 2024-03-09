@@ -354,8 +354,8 @@ const EditOptionBarComponent = () => {
               __html: `
                 <h2>Subject: Application for Frontend Developer Position </h2>
                 <p>Dear Hiring Manager,</p>
-                <p>I'm reaching out to express my interest in the <i>Frontend Developer </i> position with <u>2 years of experience</u>. With expertise in<b>HTML, CSS, JavaScript, TypeScript, and React.js</b>, I'm excited about the opportunity to contribute to your team's success.</p>
-                <p> I am excited about the possibility of joining and contributing to its continued success.</p>
+                <p>I'm reaching out to express my interest in the <u><i>Frontend Developer </i></u> position with <span style="background-color: rgb(224, 206, 6);">2+ years of experience.</span>. With expertise in<b>HTML, CSS, JavaScript, TypeScript, and React.js</b>, I'm excited about the opportunity to contribute to your team's success.</p>
+                <p><span style="background-color: rgb(5, 245, 53);"> I am excited about the possibility of joining and contributing to its continued success.</span></p>
                 <p>Best regards,</p>
                 <span>Kapil Katkar</span></br>
                 <span style="color: rgb(44, 53, 181); font-weight: bold;">7798296729</span>

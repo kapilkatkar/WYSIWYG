@@ -27,6 +27,8 @@ The WYSIWYG Editor includes the following essential formatting features:
 - **Sign:** Add special symbols or signs to your content.
 - **Emojis:** Easily insert emojis to enhance your content.
 
+## Real-Time Collaboration
+The WYSIWYG Editor supports real-time collaboration, allowing multiple users to work on the same document simultaneously. To enable real-time collaboration, users need to connect to a server that hosts the collaborative session.
 
 ## Usage
 

@@ -196,6 +196,23 @@ const EditOptionBarComponent = () => {
     socket.emit("updateEditorContent", content);
   };
 
+  const generateHTML = () => {
+    const htmlContent = document.getElementById("editor-box-content").innerHTML;
+    const newWindow = window.open();
+    newWindow.document.open();
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Generated HTML</title>
+        </head>
+        <body>
+          <textarea readonly  style="width:100%;height:100%;">${htmlContent}</textarea>
+        </body>
+      </html>
+    `);
+    newWindow.document.close();
+  };
+
   return (
     <div>
       <div id="WYSIWYG">
@@ -311,6 +328,13 @@ const EditOptionBarComponent = () => {
               Create room
             </Link>
           </div>
+
+          <ButtonComponent
+            label={"Generate HTML"}
+            color={"black"}
+            background={"white"}
+            onClickFun={generateHTML}
+          ></ButtonComponent>
           {/* <div>
             <label htmlFor="image">Select Image</label>
             <input

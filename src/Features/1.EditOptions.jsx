@@ -345,12 +345,26 @@ const EditOptionBarComponent = () => {
             id="editor-box-content"
             style={{
               width: "80%",
-              height: "350px",
+              height: "400px",
               minHeight: 150,
               fontSize: 16,
             }}
             contentEditable={true}
-            dangerouslySetInnerHTML={{ __html: editorContent }}
+            dangerouslySetInnerHTML={{
+              __html: `
+                <h2>Subject: Application for Frontend Developer Position </h2>
+                <p>Dear Hiring Manager,</p>
+                <p>I'm reaching out to express my interest in the <i>Frontend Developer </i> position with <u>2 years of experience</u>. With expertise in<b>HTML, CSS, JavaScript, TypeScript, and React.js</b>, I'm excited about the opportunity to contribute to your team's success.</p>
+                <p> I am excited about the possibility of joining and contributing to its continued success.</p>
+                <p>Best regards,</p>
+                <span>Kapil Katkar</span></br>
+                <span style="color: rgb(44, 53, 181); font-weight: bold;">7798296729</span>
+                <br>
+                <r>
+                <br>
+                <h3><span style="color: rgb(191, 43, 43);">Add, remove or change any of the text above, to see how our rich text editor works.</span></h3>
+                ${editorContent}`,
+            }}
             onBlur={() => {
               const content =
                 document.getElementById("editor-box-content").innerHTML;

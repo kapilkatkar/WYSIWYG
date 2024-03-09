@@ -1,4 +1,4 @@
-# WYDIWSU
+# WYDIWUS
 
 ## What You Do Is What You See
 

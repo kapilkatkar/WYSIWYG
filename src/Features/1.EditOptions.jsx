@@ -103,31 +103,25 @@ const EditOptionBarComponent = () => {
 
   const onBoldClick = () => {
     //applyFormatting("bold", null);
-    applyFormatting("bold", null);
+    applyFormatting("bold", isBoldClicked);
     setIsBoldClicked((prev) => !prev);
   };
 
   const onItalicClick = () => {
-    applyFormatting("italic", null);
-    setIsItalic((prev) => {
-      !prev;
-    });
+    applyFormatting("italic", isItalic);
+    setIsItalic((prev) => !prev);
   };
 
   const onUnderlineClick = () => {
-    applyFormatting("underline", null);
-    setIsUnderlined((prev) => {
-      !prev;
-    });
+    applyFormatting("underline", isUnderlined);
+    setIsUnderlined((prev) => !prev);
   };
 
   const onColorPick = (e) => {
     const selectedColor = tinycolor(e.target.value).toHexString();
     applyFormatting("forecolor", selectedColor);
+    setSelectedColor(selectedColor);
     document.execCommand("styleWithCSS", false, true);
-    setSelectedColor((prev) => {
-      !prev;
-    });
   };
 
   const onBackgroundColor = (e) => {

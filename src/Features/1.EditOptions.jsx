@@ -305,17 +305,12 @@ const EditOptionBarComponent = () => {
             </div>
           </div>
           <div>
-            <button
-              onClick={openSignatureDialogHandler}
-              style={{
-                height: "40px",
-                width: "70px",
-                backgroundColor: "black",
-                color: "white",
-              }}
-            >
-              E-Sign
-            </button>
+            <ButtonComponent
+              label={" E-Sign"}
+              color={"black"}
+              background={"white"}
+              onClickFun={openSignatureDialogHandler}
+            ></ButtonComponent>
 
             <ESignatureDialog
               open={openSignatureDialog}
@@ -325,7 +320,11 @@ const EditOptionBarComponent = () => {
           </div>
           <div>
             <Link to={`/collabrative/${uuid}`} onClick={handleCreateRoom}>
-              Create room
+              <ButtonComponent
+                label={"Create Room"}
+                color={"black"}
+                background={"white"}
+              ></ButtonComponent>
             </Link>
           </div>
 
@@ -362,6 +361,12 @@ const EditOptionBarComponent = () => {
               const content =
                 document.getElementById("editor-box-content").innerHTML;
               socket.emit("updateEditorContent", content);
+            }}
+            onKeyUp={(e) => {
+              if (e.key === " ") {
+                document.execCommand("insertHTML", false, "&nbsp;");
+                e.preventDefault();
+              }
             }}
           ></div>
         </div>
